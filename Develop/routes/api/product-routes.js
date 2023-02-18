@@ -3,7 +3,6 @@ const { Product, Category, Tag, ProductTag } = require("../../models");
 
 // The `/api/products` endpoint
 
-//! finish this
 // get all products
 router.get("/", (req, res) => {
   Product.findAll({
@@ -41,11 +40,16 @@ router.get("/:id", (req, res) => {
         attributes: ["tag_name"],
       },
     ],
-  }).then((product) => {
+  })
+  .then((product) => {
     if (!product) {
-      res.status(404).json({ message: "Product was not found" });
-      return;
+      return res.status(404).send("Product not found");
     }
+    res.status(200).json(product);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send("Error");
   });
 });
 
